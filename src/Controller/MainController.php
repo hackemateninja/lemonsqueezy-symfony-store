@@ -10,28 +10,28 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class MainController extends AbstractController
 {
-    #[Route('/', name: 'app_homepage')]
-    public function homepage(EntityManagerInterface $entityManager): Response
-    {
-        $products = $entityManager->getRepository(Product::class)
-            ->findAll();
+	#[Route('/', name: 'app_homepage')]
+	public function homepage(EntityManagerInterface $entityManager): Response
+	{
+		$products = $entityManager->getRepository(Product::class)
+			->findAll();
 
-        return $this->render('main/homepage.html.twig', [
-            'products' => $products,
-        ]);
-    }
+		return $this->render('main/homepage.html.twig', [
+			'products' => $products,
+		]);
+	}
 
-    #[Route('/pricing', name: 'app_pricing')]
-    public function pricing(): Response
-    {
-        return $this->render('main/pricing.html.twig');
-    }
+	#[Route('/pricing', name: 'app_pricing')]
+	public function pricing(): Response
+	{
+		return $this->render('main/pricing.html.twig');
+	}
 
-    #[Route('/product/{slug:product}', name: 'app_product_show')]
-    public function showProduct(Product $product): Response
-    {
-        return $this->render('main/product-show.html.twig', [
-            'product' => $product,
-        ]);
-    }
+	#[Route('/product/{slug:product}', name: 'app_product_show')]
+	public function showProduct(Product $product): Response
+	{
+		return $this->render('main/product-show.html.twig', [
+			'product' => $product,
+		]);
+	}
 }

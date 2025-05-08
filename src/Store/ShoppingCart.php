@@ -9,83 +9,84 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class ShoppingCart
 {
-    private const SESSION_KEY = '_shopping_cart';
+	private const SESSION_KEY = '_shopping_cart';
 
-    private array $cart = [
-        'products' => [],
-    ];
+	private array $cart = [
+		'products' => [],
+	];
 
-    public function __construct(
-        private readonly RequestStack $requestStack,
-        private readonly EntityManagerInterface $entityManager,
-    ) {
-    }
-    public function addProduct(Product $product, int $quantity = 1): void
-    {
-        $this->cart = $this->getSession()->get(self::SESSION_KEY, $this->cart);
+	public function __construct(
+		private readonly RequestStack $requestStack,
+		private readonly EntityManagerInterface $entityManager,
+	) {
+	}
 
-        if (isset($this->cart['products'][$product->getId()])) {
-            $this->cart['products'][$product->getId()] += $quantity;
-        } else {
-            $this->cart['products'][$product->getId()] = $quantity;
-        }
+	public function addProduct(Product $product, int $quantity = 1): void
+	{
+		$this->cart = $this->getSession()->get(self::SESSION_KEY, $this->cart);
 
-        $this->getSession()->set(self::SESSION_KEY, $this->cart);
-    }
+		if (isset($this->cart['products'][$product->getId()])) {
+			$this->cart['products'][$product->getId()] += $quantity;
+		} else {
+			$this->cart['products'][$product->getId()] = $quantity;
+		}
 
-    public function deleteProduct(Product $product): void
-    {
-        $this->cart = $this->getSession()->get(self::SESSION_KEY, $this->cart);
+		$this->getSession()->set(self::SESSION_KEY, $this->cart);
+	}
 
-        unset($this->cart['products'][$product->getId()]);
+	public function deleteProduct(Product $product): void
+	{
+		$this->cart = $this->getSession()->get(self::SESSION_KEY, $this->cart);
 
-        $this->getSession()->set(self::SESSION_KEY, $this->cart);
-    }
+		unset($this->cart['products'][$product->getId()]);
 
-    /**
-     * @return array|Product[]
-     */
-    public function getProducts(): array
-    {
-        $this->cart = $this->getSession()->get(self::SESSION_KEY, $this->cart);
-        if (empty($this->cart['products'])) {
-            return [];
-        }
+		$this->getSession()->set(self::SESSION_KEY, $this->cart);
+	}
 
-        return $this->entityManager
-            ->getRepository(Product::class)
-            ->findBy(['id' => array_keys($this->cart['products'])]);
-    }
+	/**
+	 * @return array|Product[]
+	 */
+	public function getProducts(): array
+	{
+		$this->cart = $this->getSession()->get(self::SESSION_KEY, $this->cart);
+		if (empty($this->cart['products'])) {
+			return [];
+		}
 
-    public function getProductQuantity(Product $product): int
-    {
-        $this->cart = $this->getSession()->get(self::SESSION_KEY, $this->cart);
+		return $this->entityManager
+			->getRepository(Product::class)
+			->findBy(['id' => array_keys($this->cart['products'])]);
+	}
 
-        return $this->cart['products'][$product->getId()] ?? 0;
-    }
+	public function getProductQuantity(Product $product): int
+	{
+		$this->cart = $this->getSession()->get(self::SESSION_KEY, $this->cart);
 
-    public function getTotal(): int
-    {
-        $total = 0;
-        foreach ($this->getProducts() as $product) {
-            $total += $product->getPrice() * $this->getProductQuantity($product);
-        }
+		return $this->cart['products'][$product->getId()] ?? 0;
+	}
 
-        return $total;
-    }
+	public function getTotal(): int
+	{
+		$total = 0;
+		foreach ($this->getProducts() as $product) {
+			$total += $product->getPrice() * $this->getProductQuantity($product);
+		}
 
-    public function isEmpty(): bool
-    {
-        return empty($this->getProducts());
-    }
+		return $total;
+	}
 
-    public function clear(): void
-    {
-        $this->getSession()->remove(self::SESSION_KEY);
-    }
+	public function isEmpty(): bool
+	{
+		return empty($this->getProducts());
+	}
 
-    private function getSession(): SessionInterface
-    {
-        return $this->requestStack->getSession();
-    }
+	public function clear(): void
+	{
+		$this->getSession()->remove(self::SESSION_KEY);
+	}
+
+	private function getSession(): SessionInterface
+	{
+		return $this->requestStack->getSession();
+	}
 }

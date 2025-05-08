@@ -15,42 +15,42 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class UserController extends AbstractController
 {
-    #[Route('/register', name: 'app_user_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->getUser()) {
-            return $this->redirectToRoute('app_user_account');
-        }
+	#[Route('/register', name: 'app_user_register')]
+	public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
+	{
+		if ($this->getUser()) {
+			return $this->redirectToRoute('app_user_account');
+		}
 
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
+		$user = new User();
+		$form = $this->createForm(RegistrationFormType::class, $user);
+		$form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var string $plainPassword */
-            $plainPassword = $form->get('plainPassword')->getData();
+		if ($form->isSubmitted() && $form->isValid()) {
+			/** @var string $plainPassword */
+			$plainPassword = $form->get('plainPassword')->getData();
 
-            // encode the plain password
-            $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+			// encode the plain password
+			$user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+			$entityManager->persist($user);
+			$entityManager->flush();
 
-            // do anything else you need here, like send an email
-            $this->addFlash('success', 'Your account has been created! Please, validate your email address.');
+			// do anything else you need here, like send an email
+			$this->addFlash('success', 'Your account has been created! Please, validate your email address.');
 
-            // TODO the authenticator has "debub." prefix, can we get rid of it somehow?
-            return $security->login($user, 'debug.'.LoginFormAuthenticator::class, 'main');
-        }
+			// TODO the authenticator has "debub." prefix, can we get rid of it somehow?
+			return $security->login($user, 'debug.'.LoginFormAuthenticator::class, 'main');
+		}
 
-        return $this->render('user/register.html.twig', [
-            'registrationForm' => $form,
-        ]);
-    }
+		return $this->render('user/register.html.twig', [
+			'registrationForm' => $form,
+		]);
+	}
 
-    #[Route('/account', name: 'app_user_account')]
-    public function account(): Response
-    {
-        return $this->render('user/account.html.twig');
-    }
+	#[Route('/account', name: 'app_user_account')]
+	public function account(): Response
+	{
+		return $this->render('user/account.html.twig');
+	}
 }
