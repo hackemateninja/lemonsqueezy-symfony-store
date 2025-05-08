@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome to "Squeeze the Day" store!{% endblock %}
+
+{% block content %}
+    <div class="flex justify-center mb-20">
+        <img class="max-h-[500px]" src="{{ asset('images/squeeze-day-hero.png') }}" alt="Squeeze the Day Logo">
+    </div>
+    <div>
+        <h1 class="chewy-regular text-4xl text-center mb-8">Squeeze the day with our fresh lemonade</h1>
+        {% if products|length %}
+            <div class="grid grid-cols-1 md:grid-cols-3">
+                {% for product in products %}
+                    <div class="flex justify-center items-center mb-20">
+                        <a href="{{ path('app_product_show', {'slug': product.slug}) }}">
+                            <div class="flex justify-center"><img class="max-h-[200px]" src="{{ asset('images/'~product.slug~'.png') }}" alt="{{ product.name }}"></div>
+                            <h3 class="chewy-regular text-[30px]">{{ product.name }}</h3>
+                            <p class="chewy-regular text-center">{{ product.price|price_format }}</p>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div>
+                We have run out of lemonade! Please check back later.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
