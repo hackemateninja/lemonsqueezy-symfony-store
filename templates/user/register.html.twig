@@ -3,90 +3,90 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-    <div class="flex justify-center">
+	<div class="flex justify-center">
 
-        {{ form_start(registrationForm) }}
+		{{ form_start(registrationForm) }}
 
-            <h1 class="chewy-regular text-5xl mt-[88px] mb-6">Register</h1>
+		<h1 class="chewy-regular text-5xl mt-[88px] mb-6">Register</h1>
 
-            {% if form_errors(registrationForm) is not empty %}
-                <div class="w-[400px] mb-5 py-2 px-4 bg-red-600 text-white rounded-md">
-                    {{ form_errors(registrationForm) }}
-                </div>
-            {% endif %}
+		{% if form_errors(registrationForm) is not empty %}
+			<div class="w-[400px] mb-5 py-2 px-4 bg-red-600 text-white rounded-md">
+				{{ form_errors(registrationForm) }}
+			</div>
+		{% endif %}
 
-            <div class="mb-3">
-                <label class="sr-only" for="first-name">First Name</label>
-                <input
-                    type="text"
-                    value="{{ field_value(registrationForm.firstName) }}"
-                    name="{{ field_name(registrationForm.firstName) }}"
-                    id="first-name"
-                    placeholder="First Name"
-                    class="w-[400px] form-control pl-3 py-2 rounded-xl border-2 border-[#4F272B]"
-                >
-            </div>
-            {% if field_errors(registrationForm.firstName) is not empty %}
-                <div class="w-[400px] mb-5 py-2 px-4 bg-red-600 text-white rounded-md">
-                    {% for error in  field_errors(registrationForm.firstName) %}
-                        {{ error }}
-                    {% endfor %}
-                </div>
-            {% endif %}
+		<div class="mb-3">
+			<label class="sr-only" for="first-name">First Name</label>
+			<input
+					type="text"
+					value="{{ field_value(registrationForm.firstName) }}"
+					name="{{ field_name(registrationForm.firstName) }}"
+					id="first-name"
+					placeholder="First Name"
+					class="w-[400px] form-control pl-3 py-2 rounded-xl border-2 border-[#4F272B]"
+			>
+		</div>
+		{% if field_errors(registrationForm.firstName) is not empty %}
+			<div class="w-[400px] mb-5 py-2 px-4 bg-red-600 text-white rounded-md">
+				{% for error in  field_errors(registrationForm.firstName) %}
+					{{ error }}
+				{% endfor %}
+			</div>
+		{% endif %}
 
-            <div class="my-3">
-                <label class="sr-only" for="email">Email</label>
-                <input
-                    type="text"
-                    value="{{ field_value(registrationForm.email) }}"
-                    name="{{ field_name(registrationForm.email) }}"
-                    id="email"
-                    placeholder="Email"
-                    class="w-[400px] form-control pl-3 py-2 rounded-xl border-2 border-[#4F272B]"
-                >
-            </div>
+		<div class="my-3">
+			<label class="sr-only" for="email">Email</label>
+			<input
+					type="text"
+					value="{{ field_value(registrationForm.email) }}"
+					name="{{ field_name(registrationForm.email) }}"
+					id="email"
+					placeholder="Email"
+					class="w-[400px] form-control pl-3 py-2 rounded-xl border-2 border-[#4F272B]"
+			>
+		</div>
 
-            {% if field_errors(registrationForm.email) is not empty %}
-                <div class="w-[400px] mb-5 py-2 px-4 bg-red-600 text-white rounded-md">
-                    {% for error in field_errors(registrationForm.email) %}
-                        {{ error }}
-                    {% endfor %}
-                </div>
-            {% endif %}
+		{% if field_errors(registrationForm.email) is not empty %}
+			<div class="w-[400px] mb-5 py-2 px-4 bg-red-600 text-white rounded-md">
+				{% for error in field_errors(registrationForm.email) %}
+					{{ error }}
+				{% endfor %}
+			</div>
+		{% endif %}
 
-            <div class="my-3">
-                <label class="sr-only" for="password">Password</label>
-                <input
-                    type="password"
-                    value="{{ field_value(registrationForm.plainPassword) }}"
-                    name="{{ field_name(registrationForm.plainPassword) }}"
-                    id="password"
-                    placeholder="Password"
-                    class="w-[400px] form-control pl-3 py-2 rounded-xl border-2 border-[#4F272B]"
-                >
-            </div>
+		<div class="my-3">
+			<label class="sr-only" for="password">Password</label>
+			<input
+					type="password"
+					value="{{ field_value(registrationForm.plainPassword) }}"
+					name="{{ field_name(registrationForm.plainPassword) }}"
+					id="password"
+					placeholder="Password"
+					class="w-[400px] form-control pl-3 py-2 rounded-xl border-2 border-[#4F272B]"
+			>
+		</div>
 
-            {% if field_errors(registrationForm.plainPassword) is not empty %}
-                <div class="w-[400px] mb-5 py-2 px-4 bg-red-600 text-white rounded-md">
-                    {% for error in field_errors(registrationForm.plainPassword) %}
-                        {{ error }}
-                    {% endfor %}
-                </div>
-            {% endif %}
+		{% if field_errors(registrationForm.plainPassword) is not empty %}
+			<div class="w-[400px] mb-5 py-2 px-4 bg-red-600 text-white rounded-md">
+				{% for error in field_errors(registrationForm.plainPassword) %}
+					{{ error }}
+				{% endfor %}
+			</div>
+		{% endif %}
 
-            <div class="checkbox mt-2 mb-4">
-                <label>
-                    <input
-                        type="checkbox"
-                        name="{{ field_name(registrationForm.agreeTerms) }}"
-                        checked>
-                    Remember me
-                </label>
-            </div>
+		<div class="checkbox mt-2 mb-4">
+			<label>
+				<input
+						type="checkbox"
+						name="{{ field_name(registrationForm.agreeTerms) }}"
+						checked>
+				Remember me
+			</label>
+		</div>
 
-            <button type="submit" class="rounded-[60px] border-2 border-[#50272B] bg-[#FBD509] hover:bg-[#E2BC00] shadow-inner py-3 px-5 w-full poppins-bold uppercase">Register</button>
+		<button type="submit" class="rounded-[60px] border-2 border-[#50272B] bg-[#FBD509] hover:bg-[#E2BC00] shadow-inner py-3 px-5 w-full poppins-bold uppercase">Register</button>
 
-        {{ form_end(registrationForm) }}
+		{{ form_end(registrationForm) }}
 
-    </div>
+	</div>
 {% endblock %}
